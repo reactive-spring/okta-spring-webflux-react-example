@@ -1,13 +1,10 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
@@ -19,11 +16,6 @@ import java.util.Collections;
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {
-    private final String issuerUri;
-
-    public SecurityConfiguration(@Value("${spring.security.oauth2.client.provider.okta.issuer-uri}") String issuerUri) {
-        this.issuerUri = issuerUri;
-    }
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
@@ -37,13 +29,7 @@ public class SecurityConfiguration {
             .oauth2Login()
                 .and()
             .oauth2ResourceServer()
-                .jwt()
-            .and().and().build();
-    }
-
-    @Bean
-    ReactiveJwtDecoder jwtDecoder() {
-        return ReactiveJwtDecoders.fromOidcIssuerLocation(this.issuerUri);
+                .jwt().and().and().build();
     }
 
     @Bean

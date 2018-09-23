@@ -11,6 +11,9 @@ spring:
               client-id: 0oagbqbpk4qmJDpaS0h7
               client-secret: dagQjCjCJ51Tvqz1jSlelcQ0xSkK5_VwuHmJK7MQ
               scope: openid email profile
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/keys
 
 
 
