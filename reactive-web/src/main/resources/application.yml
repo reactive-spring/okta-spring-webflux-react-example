@@ -1,10 +1,12 @@
+oidc.issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
+
 spring:
   security:
     oauth2:
       client:
         provider:
           okta:
-            issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
+            issuer-uri: ${oidc.issuer-uri}
         registration:
           login:
             okta:
@@ -13,7 +15,4 @@ spring:
               scope: openid email profile
       resourceserver:
         jwt:
-          jwk-set-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/keys
-
-
-
+          issuer-uri: ${oidc.issuer-uri}
