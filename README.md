@@ -1,4 +1,4 @@
-# Reactive Spring WebFlux API
+# Reactive Spring WebFlux API + Real-time React
 
 This example shows how to build a Reactive Spring WebFlux API, secure it with OIDC, then add real-time capabilities to a React client.
 
