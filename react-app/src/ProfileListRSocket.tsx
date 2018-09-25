@@ -37,7 +37,7 @@ const client = new RSocketClient({
   transport: new RSocketWebSocketClient({url: 'ws://localhost:8080/ws/profiles'}),
 });
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
+class ProfileListRSocket extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
@@ -89,4 +89,4 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
   }
 }
 
-export default ProfileList;
+export default ProfileListRSocket;

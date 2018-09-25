@@ -16,7 +16,8 @@ interface ProfileListState {
   isLoading: boolean;
 }
 
-class ProfileListWebSocket extends React.Component<ProfileListProps, ProfileListState> {
+class ProfileListInterval extends React.Component<ProfileListProps, ProfileListState> {
+  private interval: any;
 
   constructor(props: ProfileListProps) {
     super(props);
@@ -27,26 +28,25 @@ class ProfileListWebSocket extends React.Component<ProfileListProps, ProfileList
     };
   }
 
-  async componentDidMount() {
+  async fetchData() {
     this.setState({isLoading: true});
-    const headers = {
-      headers: {Authorization: 'Bearer ' + await this.props.auth.getAccessToken()}
-    };
 
-    const response = await fetch('http://localhost:8080/profiles', headers);
-
+    const response = await fetch('http://localhost:8080/profiles', {
+      headers: {
+        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+      }
+    });
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
+  }
 
-    const socket = new WebSocket('ws://localhost:8080/ws/profiles');
-    socket.addEventListener('message', async (event: any) => {
-      const message = JSON.parse(event.data);
-      // console.log('message', message);
-      const request = await fetch(`http://localhost:8080/profiles/${message.id}`, headers);
-      const profile = await request.json();
-      this.state.profiles.push(profile);
-      this.setState({profiles: this.state.profiles});
-    });
+  async componentDidMount() {
+    this.fetchData();
+    this.interval = setInterval(() => this.fetchData(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -64,9 +64,10 @@ class ProfileListWebSocket extends React.Component<ProfileListProps, ProfileList
             {profile.email}<br/>
           </div>
         )}
+        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileListWebSocket);
+export default withAuth(ProfileListInterval);

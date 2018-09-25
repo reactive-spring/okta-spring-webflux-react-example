@@ -54,7 +54,8 @@ class Home extends React.Component<HomeProps, HomeState> {
         <div className="Buttons">
           <button onClick={this.logout}>Logout</button>
           <p>
-            <NavLink to="/profiles" activeClassName="active">Timer</NavLink>&nbsp;|&nbsp;
+            <NavLink to="/profiles" activeClassName="active">Profile List</NavLink>&nbsp;|&nbsp;
+            <NavLink to="/profiles/interval" activeClassName="active">Interval</NavLink>&nbsp;|&nbsp;
             <NavLink to="/profiles/eventsource" activeClassName="active">EventSource</NavLink>&nbsp;|&nbsp;
             <NavLink to="/profiles/rxjs" activeClassName="active">RxJS</NavLink>&nbsp;|&nbsp;
             <NavLink to="/profiles/ws" activeClassName="active">WebSockets</NavLink>

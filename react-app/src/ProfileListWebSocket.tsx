@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Auth } from './App';
+import { withAuth } from '@okta/okta-react';
 
 interface Profile {
   id: number;
@@ -15,7 +16,7 @@ interface ProfileListState {
   isLoading: boolean;
 }
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
+class ProfileListWebSocket extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
@@ -26,20 +27,25 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
     };
   }
 
-  async fetchData() {
+  async componentDidMount() {
     this.setState({isLoading: true});
+    const headers = {
+      headers: {Authorization: 'Bearer ' + await this.props.auth.getAccessToken()}
+    };
 
-    const response = await fetch('http://localhost:8080/profiles', {
-      headers: {
-        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
-      }
-    });
+    const response = await fetch('http://localhost:8080/profiles', headers);
+
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
-  }
 
-  async componentDidMount() {
-    this.fetchData();
+    const socket = new WebSocket('ws://localhost:8080/ws/profiles');
+    socket.addEventListener('message', async (event: any) => {
+      const message = JSON.parse(event.data);
+      const request = await fetch(`http://localhost:8080/profiles/${message.id}`, headers);
+      const profile = await request.json();
+      this.state.profiles.push(profile);
+      this.setState({profiles: this.state.profiles});
+    });
   }
 
   render() {
@@ -57,10 +63,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default ProfileList;
+export default withAuth(ProfileListWebSocket);

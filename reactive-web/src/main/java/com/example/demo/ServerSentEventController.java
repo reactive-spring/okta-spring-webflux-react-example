@@ -3,6 +3,7 @@ package com.example.demo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -18,6 +19,7 @@ public class ServerSentEventController {
     }
 
     @GetMapping(path = "/sse/profiles", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @CrossOrigin(origins = "http://localhost:3000")
     public Flux<String> profiles() {
         return this.events.map(pce -> {
             try {
