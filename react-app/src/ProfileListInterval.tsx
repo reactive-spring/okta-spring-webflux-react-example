@@ -64,7 +64,6 @@ class ProfileListInterval extends React.Component<ProfileListProps, ProfileListS
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }

@@ -39,7 +39,7 @@ class ProfileListRxJS extends React.Component<ProfileListProps, ProfileListState
 
     const request = interval(3000).pipe(
       startWith(0),
-      switchMap(() =>
+      switchMap(async () =>
         fetch('http://localhost:8080/profiles', authHeader)
           .then((response) => response.json())
     ));

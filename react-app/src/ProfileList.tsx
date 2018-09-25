@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Auth } from './App';
+import { withAuth } from '@okta/okta-react';
 
 interface Profile {
   id: number;
@@ -26,7 +27,7 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
     };
   }
 
-  async fetchData() {
+  async componentDidMount() {
     this.setState({isLoading: true});
 
     const response = await fetch('http://localhost:8080/profiles', {
@@ -36,10 +37,6 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
     });
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
-  }
-
-  async componentDidMount() {
-    this.fetchData();
   }
 
   render() {
@@ -57,10 +54,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default ProfileList;
+export default withAuth(ProfileList);
