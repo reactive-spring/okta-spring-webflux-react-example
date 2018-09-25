@@ -41,7 +41,7 @@ class ProfileListInterval extends React.Component<ProfileListProps, ProfileListS
   }
 
   async componentDidMount() {
-    this.fetchData();
+    await this.fetchData();
     this.interval = setInterval(() => this.fetchData(), 1000);
   }
 
