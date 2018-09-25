@@ -2,9 +2,7 @@
 
 This example shows how to build a Reactive Spring WebFlux API, secure it with OIDC, then add real-time capabilities to a React client.
 
-Please read [Build Reactive APIs with Spring WebFlux](https://developer.okta.com/blog/2018/09/24/reactive-apis-with-spring-webflux) to see how this API was created. To see how the React app is created and secured, see []([api-changes branch in github/linguist](/github/linguist/tree/api-changes)
-
-
+Please read [Build Reactive APIs with Spring WebFlux](https://developer.okta.com/blog/2018/09/24/reactive-apis-with-spring-webflux) to see how this API was created. To see how to build the React app and integrate WebSockets, see [Full Stack Reactive with Spring WebFlux, WebSockets, and React](https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react).
 
 **Prerequisites:** [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [Maven](https://maven.apache.org), and an [Okta Developer Account](https://developer.okta.com).
 
@@ -60,7 +58,7 @@ spring:
 
 After making these changes, you should be able to start the app (using `./mvnw` in the `reactive-web` directory), navigate to <http://localhost:8080/profiles> and log in with your Okta credentials.
 
-If you'd like to run the React client (and you've checked out the `react-app` branch), you'll also need to modify `react-app/src/App.tsx` to specify your Okta settings.
+If you'd like to run the React client (and you've checked out the `react-app` branch), you'll need to modify `react-app/src/App.tsx` to specify your Okta settings.
 
 ```typescript
 const config = {
@@ -77,6 +75,32 @@ npm install
 npm start
 ```
 
+You'll also need to update `reactive-web/src/main/resources/application.yml` to contain a bit more information for enabling an OAuth 2.0 resource server.
+
+```yaml
+oidc:
+  issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
+  client-id: {clientId}
+  client-secret: {clientSecret}
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            issuer-uri: ${oidc.issuer-uri}
+        registration:
+          login:
+            okta:
+              client-id: ${oidc.client-id}
+              client-secret: ${oidc.client-secret}
+              scope: openid email profile
+      resourceserver:
+        jwt:
+          issuer-uri: ${oidc.issuer-uri}
+```
+
 ## Links
 
 This example uses the following open source libraries:
@@ -84,6 +108,8 @@ This example uses the following open source libraries:
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Spring Data](https://spring.io/projects/spring-data)
 * [Spring WebFlux](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html)
+* [React](https://reactjs.org/)
+* [Okta's React SDK](https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react)
 
 ## Help
 
