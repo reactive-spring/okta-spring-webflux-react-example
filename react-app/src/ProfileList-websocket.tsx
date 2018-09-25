@@ -14,41 +14,39 @@ interface ProfileListProps {
 interface ProfileListState {
   profiles: Array<Profile>;
   isLoading: boolean;
-  interval: number;
 }
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
-  private interval: any;
+class ProfileListWebSocket extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
 
     this.state = {
       profiles: [],
-      isLoading: false,
-      interval: 0
+      isLoading: false
     };
   }
 
-  async fetchData() {
+  async componentDidMount() {
     this.setState({isLoading: true});
+    const headers = {
+      headers: {Authorization: 'Bearer ' + await this.props.auth.getAccessToken()}
+    };
 
-    const response = await fetch('http://localhost:8080/profiles', {
-      headers: {
-        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
-      }
-    });
+    const response = await fetch('http://localhost:8080/profiles', headers);
+
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
-  }
 
-  async componentDidMount() {
-    this.fetchData();
-    this.interval = setInterval(() => this.fetchData(), 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    const socket = new WebSocket('ws://localhost:8080/ws/profiles');
+    socket.addEventListener('message', async (event: any) => {
+      const message = JSON.parse(event.data);
+      // console.log('message', message);
+      const request = await fetch(`http://localhost:8080/profiles/${message.id}`, headers);
+      const profile = await request.json();
+      this.state.profiles.push(profile);
+      this.setState({profiles: this.state.profiles});
+    });
   }
 
   render() {
@@ -66,10 +64,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileList);
+export default withAuth(ProfileListWebSocket);

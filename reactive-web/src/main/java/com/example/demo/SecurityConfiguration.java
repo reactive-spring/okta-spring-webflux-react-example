@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
             .authorizeExchange()
+                .pathMatchers("/ws/**").permitAll()
                 .anyExchange().authenticated()
                 .and()
             .oauth2Login()

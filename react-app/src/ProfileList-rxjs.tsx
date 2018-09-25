@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Auth } from './App';
+import { interval } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 import { withAuth } from '@okta/okta-react';
 
 interface Profile {
@@ -14,41 +16,37 @@ interface ProfileListProps {
 interface ProfileListState {
   profiles: Array<Profile>;
   isLoading: boolean;
-  interval: number;
 }
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
-  private interval: any;
+class ProfileListRxJS extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
 
     this.state = {
       profiles: [],
-      isLoading: false,
-      interval: 0
+      isLoading: false
     };
   }
 
-  async fetchData() {
+  async componentDidMount() {
     this.setState({isLoading: true});
-
-    const response = await fetch('http://localhost:8080/profiles', {
+    const authHeader = {
       headers: {
         Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
       }
-    });
-    const data = await response.json();
-    this.setState({profiles: data, isLoading: false});
-  }
+    };
 
-  async componentDidMount() {
-    this.fetchData();
-    this.interval = setInterval(() => this.fetchData(), 1000)
-  }
+    const request = interval(3000).pipe(
+      startWith(0),
+      switchMap(() =>
+        fetch('http://localhost:8080/profiles', authHeader)
+          .then((response) => response.json())
+    ));
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    request.subscribe(data => {
+      this.setState({profiles: data, isLoading: false});
+    })
   }
 
   render() {
@@ -66,10 +64,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileList);
+export default withAuth(ProfileListRxJS);

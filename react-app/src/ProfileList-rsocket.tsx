@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Auth } from './App';
-import { withAuth } from '@okta/okta-react';
+import {
+  RSocketClient,
+  JsonSerializers,
+} from 'rsocket-core';
+import RSocketWebSocketClient from 'rsocket-websocket-client';
 
 interface Profile {
   id: number;
@@ -14,25 +18,48 @@ interface ProfileListProps {
 interface ProfileListState {
   profiles: Array<Profile>;
   isLoading: boolean;
-  interval: number;
 }
 
+// Create an instance of a client
+const client = new RSocketClient({
+  // send/receive objects instead of strings/buffers
+  serializers: JsonSerializers,
+  setup: {
+    // ms btw sending keepalive to server
+    keepAlive: 60000,
+    // ms timeout if no keepalive response
+    lifetime: 180000,
+    // format of `data`
+    dataMimeType: 'application/json',
+    // format of `metadata`
+    metadataMimeType: 'application/json',
+  },
+  transport: new RSocketWebSocketClient({url: 'ws://localhost:8080/ws/profiles'}),
+});
+
 class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
-  private interval: any;
 
   constructor(props: ProfileListProps) {
     super(props);
 
     this.state = {
       profiles: [],
-      isLoading: false,
-      interval: 0
+      isLoading: false
     };
   }
 
-  async fetchData() {
-    this.setState({isLoading: true});
+  async componentDidMount() {
+    client.connect().subscribe({
+      onComplete: (socket: any) => {
+        socket.requestResponse();
+      },
+      onError: (error: any) => console.error(error),
+      onNext(payload: any) {
+        console.log('onNext(%s)', payload.data);
+      },
+    });
 
+    this.setState({isLoading: true});
     const response = await fetch('http://localhost:8080/profiles', {
       headers: {
         Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
@@ -40,15 +67,6 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
     });
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
-  }
-
-  async componentDidMount() {
-    this.fetchData();
-    this.interval = setInterval(() => this.fetchData(), 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   render() {
@@ -66,10 +84,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileList);
+export default ProfileList;

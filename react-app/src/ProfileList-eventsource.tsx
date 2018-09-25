@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Auth } from './App';
 import { withAuth } from '@okta/okta-react';
+import EventSource from 'event-source'
 
 interface Profile {
   id: number;
@@ -14,28 +15,24 @@ interface ProfileListProps {
 interface ProfileListState {
   profiles: Array<Profile>;
   isLoading: boolean;
-  interval: number;
 }
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
-  private interval: any;
+class ProfileListEventSource extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
 
     this.state = {
       profiles: [],
-      isLoading: false,
-      interval: 0
+      isLoading: false
     };
   }
 
-  async fetchData() {
+  async fetchData(accessToken: string) {
     this.setState({isLoading: true});
-
     const response = await fetch('http://localhost:8080/profiles', {
       headers: {
-        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+        Authorization: 'Bearer ' + accessToken
       }
     });
     const data = await response.json();
@@ -43,12 +40,18 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
   }
 
   async componentDidMount() {
-    this.fetchData();
-    this.interval = setInterval(() => this.fetchData(), 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    const accessToken = await this.props.auth.getAccessToken();
+    this.fetchData(accessToken);
+    const eventSource = new EventSource('http://localhost:8080/sse/profiles', {
+      headers: { Authorization: accessToken }
+    });
+    eventSource.onopen = (event: any) => console.log('open', event);
+    eventSource.onmessage = (event: any) => {
+      const profile = JSON.parse(event.data).source;
+      this.state.profiles.push(profile);
+      this.setState({profiles: this.state.profiles});
+    };
+    eventSource.onerror = (event: any) => console.log('error', event);
   }
 
   render() {
@@ -66,10 +69,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileList);
+export default withAuth(ProfileListEventSource);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Auth } from './App';
-import { withAuth } from '@okta/okta-react';
+import { subscribeToProfiles } from './socketio-client';
 
 interface Profile {
   id: number;
@@ -14,25 +14,21 @@ interface ProfileListProps {
 interface ProfileListState {
   profiles: Array<Profile>;
   isLoading: boolean;
-  interval: number;
 }
 
-class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
-  private interval: any;
+class ProfileListSocketIO extends React.Component<ProfileListProps, ProfileListState> {
 
   constructor(props: ProfileListProps) {
     super(props);
 
     this.state = {
       profiles: [],
-      isLoading: false,
-      interval: 0
+      isLoading: false
     };
   }
 
-  async fetchData() {
+  async componentDidMount() {
     this.setState({isLoading: true});
-
     const response = await fetch('http://localhost:8080/profiles', {
       headers: {
         Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
@@ -40,15 +36,11 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
     });
     const data = await response.json();
     this.setState({profiles: data, isLoading: false});
-  }
 
-  async componentDidMount() {
-    this.fetchData();
-    this.interval = setInterval(() => this.fetchData(), 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    subscribeToProfiles((error: string, profile: Profile) => {
+      console.log('got profile', profile);
+      this.state.profiles.push(profile);
+    });
   }
 
   render() {
@@ -66,10 +58,9 @@ class ProfileList extends React.Component<ProfileListProps, ProfileListState> {
             {profile.email}<br/>
           </div>
         )}
-        <a href="/">Home</a>
       </div>
     );
   }
 }
 
-export default withAuth(ProfileList);
+export default ProfileListSocketIO;

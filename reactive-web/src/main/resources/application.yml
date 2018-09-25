@@ -1,4 +1,7 @@
-oidc.issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
+oidc:
+  issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
+  client-id: 0oagbqbpk4qmJDpaS0h7
+  client-secret: dagQjCjCJ51Tvqz1jSlelcQ0xSkK5_VwuHmJK7MQ
 
 spring:
   security:
@@ -10,8 +13,8 @@ spring:
         registration:
           login:
             okta:
-              client-id: 0oagbqbpk4qmJDpaS0h7
-              client-secret: dagQjCjCJ51Tvqz1jSlelcQ0xSkK5_VwuHmJK7MQ
+              client-id: ${oidc.client-id}
+              client-secret: ${oidc.client-secret}
               scope: openid email profile
       resourceserver:
         jwt:

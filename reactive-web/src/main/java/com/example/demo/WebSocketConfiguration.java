@@ -13,6 +13,8 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 import reactor.core.publisher.Flux;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -60,7 +62,10 @@ class WebSocketConfiguration {
                 .map(evt -> {
                     try {
                         // <8>
-                        return objectMapper.writeValueAsString(evt.getSource());
+                        Profile profile = (Profile) evt.getSource();
+                        Map<String, String> data = new HashMap<>();
+                        data.put("id", profile.getId());
+                        return objectMapper.writeValueAsString(data);
                     }
                     catch (JsonProcessingException e) {
                         throw new RuntimeException(e);

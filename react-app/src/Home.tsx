@@ -4,7 +4,7 @@ import { withAuth } from '@okta/okta-react';
 import { Auth } from './App';
 
 import logo from './logo.svg';
-import ProfileList from './ProfileList';
+import { NavLink } from 'react-router-dom';
 
 interface HomeProps {
   auth: Auth;
@@ -53,7 +53,14 @@ class Home extends React.Component<HomeProps, HomeState> {
       body = (
         <div className="Buttons">
           <button onClick={this.logout}>Logout</button>
-          <ProfileList auth={this.props.auth}/>
+          <p>
+            <NavLink to="/profiles" activeClassName="active">Timer</NavLink>&nbsp;|&nbsp;
+            <NavLink to="/profiles/eventsource" activeClassName="active">EventSource</NavLink>&nbsp;|&nbsp;
+            <NavLink to="/profiles/rxjs" activeClassName="active">RxJS</NavLink>&nbsp;|&nbsp;
+            <NavLink to="/profiles/ws" activeClassName="active">WebSockets</NavLink>
+            {/*<a href="/profiles/rsocket">Profile List with RSocket</a><br/>
+            <a href="/profiles/socketio">Profile List with SocketIO</a><br/>*/}
+          </p>
         </div>
       );
     } else {
