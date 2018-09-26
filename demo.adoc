@@ -8,7 +8,9 @@
 
 . Add `Profile`, `ProfileRepository`, and `SampleDataInitializer` [`webflux-entity`, `webflux-repo`, `webflux-data`]
 
-. Start and see list of profiles in console
+. Start and see list of profiles in console: `SPRING_PROFILES_ACTIVE=demo mvn`
+
+. Create `ProfileService` [`webflux-service`]
 
 . Create `ProfileRestController` with a `/profiles` endpoint [`webflux-controller`]
 
@@ -20,7 +22,9 @@
   http PUT :8080/profiles/1 email='matt.raible@okta.com'
   http DELETE :8080/profiles/1
 
-. Create `ProfileCreatedEvent`, `ProfileCreatedEventPublisher`, and `ProfileService` [`webflux-event, `webflux-publisher`, `webflux-service`]
+. Create `ProfileCreatedEvent`, `ProfileCreatedEventPublisher`, and update `ProfileService` [`webflux-event, `webflux-publisher`]
+
+. Create `WebSocketConfiguration` for executor bean [`webflux-websocket`]
 
 . Create `ProfileHandler`, `ProfileEndPointConfiguration`, and `CaseInsensitiveRequestPredicate` [`webflux-handler`, `webflux-endpoint`, `webflux-predicate`]
 
@@ -28,7 +32,7 @@
 
 . Create `WebSocketConfiguration` and `static/ws.html` [`webflux-websocket`, `webflux-ws`]
 
-. Show http://localhost:8080/ws.html and run `create.sh`
+. Restore `doOnSuccess` in `ProfileService` and show http://localhost:8080/ws.html with `create.sh`
 
 . Create `ServerSentEventController`, show `http http://localhost:8080/sse/profiles -S` [`webflux-sse`]
 
@@ -44,7 +48,7 @@
 
 . Modify `tslint.json` to fix issues [`tslint-rules`]
 
-. Configure proxy for React and show list of profiles
+. Configure proxy for React and show list of profiles [`react-proxy`]
 
 . Create `ProfileList.tsx` and copy code from `App.tsx`; change `App.tsx` to use `<ProfileList/>`
 
@@ -60,11 +64,7 @@
 
 . Use EventSource with SSE [`react-eventsource`]
 
-=== PWA Support
-
-. Run `npm run build`; serve with `serve -s build -p 3000`
-
-. Run Lighthouse; fix 512px icon https://www.flaticon.com [`react-icon`]
+. Add `@CrossOrigin` in `ServerSentEventController`
 
 === Authentication with Okta
 
@@ -72,9 +72,11 @@
 
 . Create OIDC app in Okta; add properties to `application.yml` [`ss-application`]
 
-. Create `SecurityConfiguration` for resource server and CORS [`ss-demo`]
+. Upgrade Spring Boot to `2.1.0.M4` in `pom.xml` and add snapshot repos [`spring-repos`]
 
-. Show login redirect from http://localhost:8080
+. Show login redirect from http://localhost:8080/profiles
+
+. Create `SecurityConfiguration` for resource server and CORS [`ss-demo`]
 
 . Add Okta's React SDK [`okta-react`]
 
@@ -89,7 +91,7 @@
 
 . Add CSS to `App.css` to make buttons more visible [`react-css`]
 
-. Show app and Loading...
+. Remove `proxy` from `package.json`, restart, show app and Loading...
 
 . Update `ProfileList` to add an authorization header + error handling [`react-token`]
 
