@@ -22,7 +22,7 @@
   http PUT :8080/profiles/1 email='matt.raible@okta.com'
   http DELETE :8080/profiles/1
 
-. Create `ProfileCreatedEvent`, `ProfileCreatedEventPublisher`, and update `ProfileService` [`webflux-event, `webflux-publisher`]
+. Create `ProfileCreatedEvent`, `ProfileCreatedEventPublisher`, and update `ProfileService` [`webflux-event`, `webflux-publisher`]
 
 . Create `WebSocketConfiguration` for executor bean [`webflux-websocket`]
 
