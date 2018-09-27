@@ -30,7 +30,7 @@
 
 . Restart and confirm http://localhost:8080/profiles works in browser and with http
 
-. Create `WebSocketConfiguration` and `static/ws.html` [`webflux-websocket`, `webflux-ws`]
+. Create `static/ws.html` to show event notifications [`webflux-ws`]
 
 . Restore `doOnSuccess` in `ProfileService` and show http://localhost:8080/ws.html with `create.sh`
 
