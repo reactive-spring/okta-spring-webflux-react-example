@@ -76,7 +76,7 @@
 
 . Show login redirect from http://localhost:8080/profiles
 
-. Create `SecurityConfiguration` for resource server and CORS [`ss-demo`]
+. Create `SecurityConfiguration` for resource server and CORS [`ss-config`]
 
 . Add Okta's React SDK [`okta-react`]
 
