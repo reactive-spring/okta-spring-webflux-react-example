@@ -1,5 +1,7 @@
 == WebFlux + React Demo Steps
 
+The brackets at the end of each step indicate the alias's or IntelliJ Live Templates to use. You can find the template definitions at https://github.com/mraible/idea-live-templates[mraible/idea-live-templates].
+
 === Spring WebFlux API
 
 . start.spring.io: data-mongodb-reactive, webflux, devtools, and lombok [`webflux-start`]
