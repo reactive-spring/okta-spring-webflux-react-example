@@ -40,7 +40,9 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 === React App
 
-. Run `npx create-react-app react-app --scripts-version=react-scripts-ts`; show app with `npm start`
+. Run `npx create-react-app react-app`; show app with `npm start`
+
+. Add TypeScript support with `yarn add -D typescript @types/node @types/react @types/react-dom @types/jest` [`cra-ts`]
 
 . Modify `App.tsx` and add `componentDidMount()` to fetch profiles [`react-fetch`]
 
@@ -48,9 +50,7 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 . Change `render()` to show profiles [`react-loading` and `react-list`]
 
-. Modify `tslint.json` to fix issues [`tslint-rules`]
-
-. Configure proxy for React and show list of profiles [`react-proxy`]
+. Configure proxy for React and show list of profiles
 
 . Create `ProfileList.tsx` and copy code from `App.tsx`; change `App.tsx` to use `<ProfileList/>`
 
@@ -58,11 +58,19 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 . Modify `ProfileList.tsx` to fetch every second [`react-interval`]
 
+. Fix `Promise` type error by modifying `tsconfig.json` and adding a "lib" key/value for ES6.
+
+  ----
+  "lib": ["es6", "dom"],
+  ----
+
 . Create and run `create-stream.sh`
 
 . Use RxJS: install rxjs first! [`react-rxjs`]
 
 . Use WebSocket [`react-websocket`]
+
+. Create `src/setupProxy.js` to set up proxy for WebSockets [`react-proxy`]
 
 . Use EventSource with SSE [`react-eventsource`]
 
@@ -74,18 +82,16 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 . Create OIDC app in Okta; add properties to `application.yml` [`ss-application`]
 
-. Upgrade Spring Boot to `2.1.0.M4` in `pom.xml` and add snapshot repos [`spring-repos`]
-
 . Show login redirect from http://localhost:8080/profiles
 
 . Create `SecurityConfiguration` for resource server and CORS [`ss-config`]
 
 . Add Okta's React SDK [`okta-react`]
 
-  yarn add @okta/okta-react@1.1.1 react-router-dom@4.3.1
+  yarn add @okta/okta-react@1.1.4 react-router-dom@4.3.1
   yarn add -D @types/react-router-dom@4.3.1
 
-. Update `App.tsx` to use `<Security/>` component [`react-security`]
+. Update `App.tsx` to have Okta config and use `<Security/>` component [`react-config`, `react-security`]
 
 . Create `src/okta.d.ts` with `declare module '@okta/okta-react';`
 
