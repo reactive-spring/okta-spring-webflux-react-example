@@ -34,26 +34,33 @@ You will need to create an OIDC Application in Okta to get your settings to log 
 3. Select **Web** and click **Next**. 
 4. Give the application a name (e.g., `Spring WebFlux API`) and add the following as Login redirect URIs:
     * `http://localhost:8080/login/oauth2/code/okta`
+    * `http://localhost:3000/implicit/callback`
     * `https://oidcdebugger.com/debug`
-    * `http://localhost:3000/login`
 4. Click **Done**, then edit the project and enable "Implicit (Hybrid)" as a grant type (allow ID and access tokens) and click **Save**.
 
 Copy the settings from your OIDC app into `reactive-web/src/main/resources/application.yml`:
 
 ```yaml
+oidc:
+  issuer-uri: https://{yourOktaDomain}/oauth2/default
+  client-id: {clientId}
+  client-secret: {clientSecret}
+
 spring:
   security:
     oauth2:
       client:
         provider:
           okta:
-            issuer-uri: https://{yourOktaDomain}/oauth2/default
+            issuer-uri: ${oidc.issuer-uri}
         registration:
-          login:
-            okta:
-              client-id: {clientId}
-              client-secret: {clientSecret}
-              scope: openid email profile
+          okta:
+            client-id: ${oidc.client-id}
+            client-secret: ${oidc.client-secret}
+            scope: openid, email, profile
+      resourceserver:
+        jwt:
+          issuer-uri: ${oidc.issuer-uri}
 ```
 
 After making these changes, you should be able to start the app (using `./mvnw` in the `reactive-web` directory), navigate to <http://localhost:8080/profiles> and log in with your Okta credentials.
@@ -73,32 +80,6 @@ You can start the React app by running the following commands (in the `react-app
 ```bash
 npm install
 npm start
-```
-
-You'll also need to update `reactive-web/src/main/resources/application.yml` to contain a bit more information for enabling an OAuth 2.0 resource server.
-
-```yaml
-oidc:
-  issuer-uri: https://dev-737523.oktapreview.com/oauth2/default
-  client-id: {clientId}
-  client-secret: {clientSecret}
-
-spring:
-  security:
-    oauth2:
-      client:
-        provider:
-          okta:
-            issuer-uri: ${oidc.issuer-uri}
-        registration:
-          login:
-            okta:
-              client-id: ${oidc.client-id}
-              client-secret: ${oidc.client-secret}
-              scope: openid email profile
-      resourceserver:
-        jwt:
-          issuer-uri: ${oidc.issuer-uri}
 ```
 
 ## Links
