@@ -1,7 +1,10 @@
 package com.example.demo;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -18,7 +21,7 @@ public class SecurityConfiguration {
 
     @Bean // <3>
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
+        http
             .csrf()
                 .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // <4>
                 .and()
@@ -29,7 +32,8 @@ public class SecurityConfiguration {
             .oauth2Login()
                 .and()
             .oauth2ResourceServer()
-                .jwt().and().and().build();
+                .jwt();
+        return http.build();
     }
 
     @Bean // <6>
