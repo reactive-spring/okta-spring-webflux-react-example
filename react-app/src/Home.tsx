@@ -52,9 +52,7 @@ class Home extends Component<HomeProps, HomeState> {
       body = (
         <div className="Buttons">
           <button onClick={this.logout}>Logout</button>
-          <p>
-            <ProfileList auth={this.props.auth}/>
-          </p>
+          <ProfileList auth={this.props.auth}/>
         </div>
       );
     } else {
