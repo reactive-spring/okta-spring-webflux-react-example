@@ -28,7 +28,7 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 . Create `WebSocketConfiguration` for executor bean [`webflux-websocket`]
 
-. Create `ProfileHandler`, `ProfileEndPointConfiguration`, and `CaseInsensitiveRequestPredicate` [`webflux-handler`, `webflux-endpoint`, `webflux-predicate`]
+. Create `ProfileHandler`, `ProfileEndpointConfiguration`, and `CaseInsensitiveRequestPredicate` [`webflux-handler`, `webflux-endpoint`, `webflux-predicate`]
 
 . Restart and confirm http://localhost:8080/profiles works in browser and with http
 
@@ -40,9 +40,7 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 === React App
 
-. Run `npx create-react-app react-app`; show app with `npm start`
-
-. Add TypeScript support with `yarn add -D typescript @types/node @types/react @types/react-dom @types/jest` [`cra-ts`]
+. Run `npx create-react-app react-app --typescript`; show app with `npm start`
 
 . Modify `App.tsx` and add `componentDidMount()` to fetch profiles [`react-fetch`]
 
@@ -58,12 +56,6 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 . Modify `ProfileList.tsx` to fetch every second [`react-interval`]
 
-. Fix `Promise` type error by modifying `tsconfig.json` and adding a "lib" key/value for ES6.
-
-  ----
-  "lib": ["es6", "dom"],
-  ----
-
 . Create and run `create-stream.sh`
 
 . Use RxJS: install rxjs first! [`react-rxjs`]
@@ -78,24 +70,22 @@ The brackets at the end of each step indicate the alias's or IntelliJ Live Templ
 
 === Authentication with Okta
 
-. Add Spring Security OIDC and dependencies [`ss-maven`]
+. Add Spring Security OIDC and dependencies [`ss-maven` || `okta-maven-boot`]
 
-. Create OIDC app in Okta; add properties to `application.yml` [`ss-application`]
+. Create OIDC app in Okta; add properties to `application.yml` [`ss-application` || `okta-oauth2-yaml`]
 
 . Show login redirect from http://localhost:8080/profiles
 
 . Create `SecurityConfiguration` for resource server and CORS [`ss-config`]. Add `resourceserver` settings to `application.yml`.
 
-. Add Okta's React SDK [`okta-react`]
+. Add Okta's React SDK using OktaDev Schematics
 
-  yarn add @okta/okta-react@1.1.4 react-router-dom@4.3.1
-  yarn add -D @types/react-router-dom@4.3.1
+  npm install @oktadev/schematics
+  schematics @oktadev/schematics:add-auth
 
-. Update `App.tsx` to have Okta config and use `<Security/>` component [`react-config`, `react-security`]
+. Show changes in `App.tsx` and new `Home.tsx` file
 
-. Create `src/okta.d.ts` with `declare module '@okta/okta-react';`
-
-. Create `Home.tsx` to render the app shell, login/logout buttons, and use `<ProfileList/>` [`react-home`]
+. Add `<ProfileList auth={this.props.auth}/>` in `Home.tsx`
 
 . Add CSS to `App.css` to make buttons more visible [`react-css`]
 
