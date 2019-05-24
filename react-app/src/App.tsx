@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Home from './Home';
+import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Security, ImplicitCallback } from '@okta/okta-react';
+import Home from './Home';
 
 const config = {
-  issuer: 'https://dev-737523.oktapreview.com/oauth2/default',
+  issuer: 'https://dev-133320.okta.com/oauth2/default',
   redirect_uri: window.location.origin + '/implicit/callback',
-  client_id: '0oagbqbpk4qmJDpaS0h7'
+  client_id: '0oamyejrp8Ol5Zplu356'
 };
 
 export interface Auth {
@@ -16,7 +16,7 @@ export interface Auth {
   getAccessToken(): string;
 }
 
-class App extends Component {
+class App extends React.Component {
 
   render() {
     return (

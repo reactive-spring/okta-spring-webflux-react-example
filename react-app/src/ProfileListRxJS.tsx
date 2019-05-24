@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { startWith, switchMap } from 'rxjs/operators';
 import { interval } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 interface Profile {
   id: number;

@@ -48,8 +48,8 @@ class WebSocketConfiguration {
 
     @Bean
     WebSocketHandler webSocketHandler(
-            ObjectMapper objectMapper, // <5>
-            ProfileCreatedEventPublisher eventPublisher // <6>
+        ObjectMapper objectMapper, // <5>
+        ProfileCreatedEventPublisher eventPublisher // <6>
     ) {
 
         Flux<ProfileCreatedEvent> publish = Flux.create(eventPublisher).share(); // <7>

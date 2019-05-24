@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
 import { withAuth } from '@okta/okta-react';
 import { Auth } from './App';
+
+import './App.css';
 import logo from './logo.svg';
 import ProfileList from './ProfileList';
 
@@ -13,7 +14,7 @@ interface HomeState {
   authenticated: boolean;
 }
 
-class Home extends Component<HomeProps, HomeState> {
+export default withAuth(class Home extends Component<HomeProps, HomeState> {
   constructor(props: HomeProps) {
     super(props);
     this.state = {authenticated: false};
@@ -38,7 +39,7 @@ class Home extends Component<HomeProps, HomeState> {
   }
 
   async login() {
-    this.props.auth.login('/')
+    this.props.auth.login('/');
   }
 
   async logout() {
@@ -52,9 +53,7 @@ class Home extends Component<HomeProps, HomeState> {
       body = (
         <div className="Buttons">
           <button onClick={this.logout}>Logout</button>
-          <p>
-            <ProfileList auth={this.props.auth}/>
-          </p>
+          <ProfileList auth={this.props.auth}/>
         </div>
       );
     } else {
@@ -75,6 +74,4 @@ class Home extends Component<HomeProps, HomeState> {
       </div>
     );
   }
-}
-
-export default withAuth(Home);
+});
