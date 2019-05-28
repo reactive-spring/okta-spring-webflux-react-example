@@ -18,18 +18,20 @@ public class SecurityConfiguration {
 
     @Bean // <3>
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        // @formatter:off
         return http
-            .csrf()
-                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // <4>
-                .and()
-            .authorizeExchange()
-                .pathMatchers("/ws/**").permitAll() // <5>
-                .anyExchange().authenticated()
-                .and()
-            .oauth2Login()
-                .and()
-            .oauth2ResourceServer()
-                .jwt().and().and().build();
+                .csrf()
+                    .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // <4>
+                    .and()
+                .authorizeExchange()
+                    .pathMatchers("/ws/**").permitAll() // <5>
+                    .anyExchange().authenticated()
+                    .and()
+                .oauth2Login()
+                    .and()
+                .oauth2ResourceServer()
+                    .jwt().and().and().build();
+        // @formatter:on
     }
 
     @Bean // <6>
