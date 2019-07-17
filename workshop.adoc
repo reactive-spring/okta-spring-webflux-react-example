@@ -125,7 +125,7 @@ class SampleDataInitializer implements ApplicationListener<ApplicationReadyEvent
 ----
 ====
 [start=4]
-. Start and see list of profiles in console: `SPRING_PROFILES_ACTIVE=demo mvn`
+. Start and see list of profiles in console: `SPRING_PROFILES_ACTIVE=demo mvn spring-boot:run`
 
 . Create `ProfileService` [`webflux-service`]
 
@@ -253,7 +253,7 @@ class ProfileRestController {
 ====
 
 [start=7]
-. Restart server with classic profile: `SPRING_PROFILES_ACTIVE=classic mvn`
+. Restart server with classic profile: `SPRING_PROFILES_ACTIVE=classic mvn spring-boot:run`
 
 . Restart and confirm http://localhost:8080/profiles works in your browser and with HTTPie
 
