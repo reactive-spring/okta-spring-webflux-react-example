@@ -33,7 +33,7 @@ Follow the steps below or read https://developer.okta.com/blog/2018/09/24/reacti
 
 === Spring WebFlux API
 
-. Use https://start.spring.io[start.spring.io] to create an app with `data-mongodb-reactive`, `webflux`, `devtools`, and `lombok` [`webflux-start`]
+. Use https://start.spring.io[start.spring.io] to create an app with `data-mongodb-reactive`, `webflux`, `devtools`, and `lombok`
 
   http https://start.spring.io/starter.zip dependencies==data-mongodb-reactive,webflux,devtools,lombok -d
 
