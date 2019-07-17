@@ -632,7 +632,7 @@ curl -H"content-type: application/json" -d'{"email":"random"}' http://localhost:
 ====
 
 [start=15]
-. Create `ServerSentEventController` and try `http http://localhost:8080/sse/profiles -S` [`webflux-sse`]
+. Create `ServerSentEventController` [`webflux-sse`] and try `http :8080/sse/profiles -S`
 
 .`src/main/java/com/example/demo/ServerSentEventController.java`
 [%collapsible]
