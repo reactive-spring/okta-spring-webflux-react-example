@@ -127,6 +127,9 @@ class SampleDataInitializer implements ApplicationListener<ApplicationReadyEvent
 [start=4]
 . Start and see list of profiles in console: `SPRING_PROFILES_ACTIVE=demo mvn spring-boot:run`
 
+TIP: If you prefer to use an IDE to run your app, you'll need to https://projectlombok.org/setup/overview[install a Lombok plugin] for it.
+
+[start=5]
 . Create `ProfileService` [`webflux-service`]
 
 .`src/main/java/com/example/demo/ProfileService.java`
@@ -724,7 +727,7 @@ export default App;
 ----
 interface Profile {
   id: string;
-  name: string;
+  email: string;
 }
 
 interface AppProps {
@@ -784,7 +787,7 @@ render() {
           <h2>Profile List</h2>
           {profiles.map((profile: Profile) =>
             <div key={profile.id}>
-              {profile.name}
+              {profile.email}
             </div>
           )}
         </div>
@@ -811,7 +814,7 @@ import React, { Component } from 'react';
 
 interface Profile {
   id: string;
-  name: string;
+  email: string;
 }
 
 interface ProfileListProps {
@@ -854,7 +857,7 @@ class ProfileList extends Component<ProfileListProps, ProfileListState> {
         <h2>Profile List</h2>
         {profiles.map((profile: Profile) =>
           <div key={profile.id}>
-            {profile.name}
+            {profile.email}
           </div>
         )}
       </div>
