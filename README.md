@@ -6,7 +6,11 @@
 
 This example shows how to build a Reactive Spring WebFlux API, secure it with OIDC, then add real-time capabilities to a React client.
 
-Please read [Build Reactive APIs with Spring WebFlux](https://developer.okta.com/blog/2018/09/24/reactive-apis-with-spring-webflux) to see how this API was created. To see how to build the React app and integrate WebSockets, see [Full Stack Reactive with Spring WebFlux, WebSockets, and React](https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react).
+Please read 
+## [Build Reactive APIs with Spring WebFlux](https://developer.okta.com/blog/2018/09/24/reactive-apis-with-spring-webflux) 
+### To see how this API was created. 
+### To see how to build the React app and integrate WebSockets, see
+## [Full Stack Reactive with Spring WebFlux, WebSockets, and React](https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react).
 
 **Prerequisites:** [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [Maven](https://maven.apache.org), and an [Okta Developer Account](https://developer.okta.com).
 
