@@ -1,4 +1,8 @@
+* [https://developer.okta.com/blog/2018/09/24/reactive-apis-with-spring-webflux]
+* [https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react]
+
 # Reactive Spring WebFlux API + Real-time React
+## 2 Подробные статьи с аннотированным кодом для отработки реактивных подходов в Java 
 
 This example shows how to build a Reactive Spring WebFlux API, secure it with OIDC, then add real-time capabilities to a React client.
 
